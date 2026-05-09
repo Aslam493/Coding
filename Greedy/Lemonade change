@@ -1,0 +1,40 @@
+https://leetcode.com/problems/lemonade-change/submissions/1999132424/
+class Solution {
+    public boolean lemonadeChange(int[] bills) {
+        return fun(bills);
+    }
+    public static boolean fun(int[] bills){
+        int start=0;
+        int five=0;
+        int ten=0;
+        int twenty=0;
+
+        while(start<bills.length){
+            if(bills[start]==5){
+                five++;
+            }
+            else if (bills[start]-5==5&&five>0){
+                ten++;
+                five--;
+
+            }
+            else if(bills[start]-5==15&&ten>0&&five>0){
+                  ten--;
+                  five--;
+                  twenty++;
+
+            }
+            else if(bills[start]-5==15 && five>2)
+            {
+                five-=3;
+                twenty++;
+            }
+            else{
+                System.out.println(start);
+                return false;
+            }
+            start++;
+        }
+        return true;
+    }
+}
