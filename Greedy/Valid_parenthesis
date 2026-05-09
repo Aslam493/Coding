@@ -1,0 +1,64 @@
+Leetcode 678 
+https://leetcode.com/problems/valid-parenthesis-string/
+TLE OCCUR   DUE to 3n
+class Solution {
+    public boolean checkValidString(String s) {
+       
+        return fun(s,0,0,0);
+    }
+    
+    public static boolean fun(String s,int open ,int close,int start){
+        if(close>open){
+            return false;
+        }
+        
+        if(start==s.length()&&open==close){
+            return true;
+        }
+        if(open>close&&start==s.length()){
+            return false;
+        }
+        char c=s.charAt(start);
+        if(c=='('){
+            return fun(s,open+1,close,start+1);
+        }
+        else if(c==')'){
+            return fun(s,open,close+1,start+1);
+        }
+        else{
+            return fun(s,open+1,close,start+1)||fun(s,open,close+1,start+1)||fun(s,open,close,start+1);
+        }
+    }    
+ 
+}
+OPTIMAL WAY
+class Solution {
+    public boolean checkValidString(String s) {
+        int low=0;
+        int high=0;
+        for(int i=0;i<s.length();i++){
+            char c=s.charAt(i);
+            if(c=='('){
+                 low++;
+                 high++;
+            }
+            else if(c==')'){
+                low--;
+                high--;
+            }
+            else{
+                low--;
+                high++;
+            }
+            if(high<0){
+                return false;
+            }
+             low=Math.max(0,low);
+        }
+       
+       
+        return low==0;
+    }
+    
+    
+}
