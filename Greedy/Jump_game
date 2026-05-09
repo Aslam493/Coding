@@ -1,0 +1,29 @@
+https://leetcode.com/problems/jump-game/
+class Solution {
+    public boolean canJump(int[] nums) {
+        dp=new int [nums.length];
+        Arrays.fill(dp,-1);
+        return fun(nums,0);
+    }
+    static int[] dp;
+    public static boolean fun(int[] nums,int i){
+       
+        if(i==nums.length-1){
+            return true;
+        }
+        
+        if(dp[i]!=-1){
+            return dp[i]==1;
+        }
+         int z=nums[i];
+         for(int j=1;j<=z;j++){
+            
+         if(fun(nums,i+j)){
+            dp[i]=1;
+            return true;
+         }
+         }
+         dp[i]=0;
+     return false;
+    }
+}
