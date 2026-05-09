@@ -1,0 +1,35 @@
+https://www.geeksforgeeks.org/problems/n-meetings-in-one-room-1587115620/1
+class Solution {
+    // Function to find the maximum number of meetings that can
+    // be performed in a meeting room.
+    public int maxMeetings(int start[], int end[]) {
+        // add your code here
+        return fun(start,end);
+    }
+    public static int fun(int[] start,int[] end){
+        PriorityQueue<pair> pq=new PriorityQueue<>((a,b)->(a.e-b.e));
+        for(int i=0;i<start.length;i++){
+            pq.add(new pair(start[i],end[i]));
+            
+        }
+        int total=0;
+        int time=-1;
+        while(!pq.isEmpty()){
+            pair temp =pq.poll();
+            if(time<temp.s){
+                total++;
+                time=temp.e;
+            }
+        }
+       
+        return total;
+    }
+    static class pair{
+        int s;
+        int e;
+        pair(int s,int e ){
+            this.s=s;
+            this.e=e;
+        }
+    }
+}
