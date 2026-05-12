@@ -1,0 +1,65 @@
+https://leetcode.com/problems/maximum-profit-in-job-scheduling/
+Job scheduling 
+class Solution {
+    public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
+         PriorityQueue<pair> pq=new PriorityQueue<>((a,b)->(a.start-b.start));
+         dp=new int[startTime.length];
+         Arrays.fill(dp,-1);
+         for(int i=0;i<startTime.length;i++){
+            pq.add(new pair(startTime[i],endTime[i],profit[i]));
+         }
+         pair[] arr=new pair[startTime.length];
+         int i=0;
+         while(!pq.isEmpty()){
+            arr[i]=pq.poll();
+            i++;
+         }
+        return solve(arr,0);
+
+    }
+    static int[] dp;
+    public static int solve(pair[] arr,int i){
+        if (i>=arr.length){
+            return 0;
+        }
+        if(dp[i]!=-1){
+            return dp[i];
+        }
+        int next =binary(arr,arr[i].end);
+        int take=arr[i].pro;
+        if(next!=-1){
+            take+=solve(arr,next);
+        }
+        int skip=solve(arr,i+1);
+        return dp[i]=Math.max(skip,take);
+    }
+    public static int binary(pair[] arr,int n){
+        int start=0;
+        int end=arr.length-1;
+          int ans=-1;
+        while(start<=end){
+            int mid=(start+end)/2;
+            if(arr[mid].start>=n){
+                ans=mid;
+                end=mid-1;
+                
+            }
+            else {
+             start=mid+1;
+
+            }
+           
+        }
+        return ans;
+    }
+   static class pair{
+    int start;
+    int end;
+    int pro;
+    pair(int start,int end,int pro){
+        this.start=start;
+        this.end=end;
+        this.pro=pro;
+    }
+   }
+}
