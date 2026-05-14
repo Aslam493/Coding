@@ -1,0 +1,59 @@
+Maximal_rectangle
+https://leetcode.com/problems/maximal-rectangle/
+class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        return solve(matrix);
+    }
+    public static int solve(char[][] matrix){
+        int max=0;
+        int[] row=new int[matrix[0].length];
+        for(char[] temp:matrix){
+            for(int i=0;i<temp.length;i++){
+                 if(temp[i]=='0'){
+                     row[i]=0;
+                 }
+                 else{
+                     row[i]+=1;
+                 }
+            }
+           max=Math.max(max,fun(row));
+        }
+        return max;
+    }
+     public static int fun(int[] heights){
+        Stack<Integer> next=new Stack<>();
+        Stack<Integer> prev=new Stack<>();
+        int[] next_smaller=new int[heights.length];
+        for(int i=0;i<heights.length;i++){
+              int temp=heights[i];
+            
+              while(!next.isEmpty()&&heights[next.peek()]>temp){
+                       next_smaller[next.pop()]=i;
+              }
+              next.push(i);
+        }
+        while(!next.isEmpty()){
+             next_smaller[next.pop()]=heights.length;
+        }
+        int[] prev_smaller=new int[heights.length];
+
+          for(int i=heights.length-1;i>=0;i--){
+              int temp=heights[i];
+            
+              while(!prev.isEmpty()&&heights[prev.peek()]>temp){
+                       prev_smaller[prev.pop()]=i;
+              }
+              prev.push(i);
+        }
+         while(!prev.isEmpty()){
+             prev_smaller[prev.pop()]=-1;
+        }
+       
+        int max=0;
+        for(int i=0;i<heights.length;i++){
+           int width=next_smaller[i]-prev_smaller[i]-1;
+           max=Math.max(max,width*heights[i]);
+        }
+        return max;
+      }
+}
