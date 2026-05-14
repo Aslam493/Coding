@@ -1,0 +1,56 @@
+non_overlaping_interval
+https://leetcode.com/problems/non-overlapping-intervals/
+class Solution {
+
+    public int eraseOverlapIntervals(int[][] intervals) {
+        return fun(intervals);
+    }
+
+    public static int fun(int[][] intervals){
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> {
+
+            if(a[0] == b[0])
+                return a[1] - b[1];
+
+            return a[0] - b[0];
+        });
+
+        for(int i=0;i<intervals.length;i++){
+            pq.add(intervals[i]);
+        }
+
+        int remove = 0;
+
+        ArrayList<int[]> ll = new ArrayList<>();
+
+        while(!pq.isEmpty()){
+            ll.add(pq.poll());
+        }
+
+        int[] prev = ll.remove(0);
+
+        while(!ll.isEmpty()){
+
+            int[] cur = ll.remove(0);
+
+            // overlap
+            if(cur[0] < prev[1]){
+
+                remove++;
+
+                // keep smaller ending interval
+                if(cur[1] < prev[1]){
+                    prev = cur;
+                }
+            }
+
+            // no overlap
+            else{
+                prev = cur;
+            }
+        }
+
+        return remove;
+    }
+}
