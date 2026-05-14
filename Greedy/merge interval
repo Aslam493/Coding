@@ -1,0 +1,35 @@
+https://leetcode.com/problems/merge-intervals/
+merge interval
+class Solution {
+    public int[][] merge(int[][] intervals) {
+      PriorityQueue<int[]> pq=new PriorityQueue<>((a,b)->
+     { if(a[0]==b[0])
+          return a[1]-b[1];
+        return a[0]-b[0];});
+      ArrayList<int[]> ll=new ArrayList<>();
+      for(int i=0;i<intervals.length;i++){
+        pq.add(intervals[i]);
+      } 
+      while(!pq.isEmpty()){
+          ll.add(pq.poll());
+      } 
+      ArrayList<int[]> ans=new ArrayList<>();
+      while(ll.size()>1){
+        int[] temp=ll.remove(0);
+        int[] temp1=ll.get(0);
+        if(temp[1]<temp1[0]){
+             ans.add(temp);
+        }
+        else if(temp[0]<temp1[1]){
+             temp[0]=Math.min(temp[0],temp1[0]);
+             temp[1]=Math.max(temp[1],temp1[1]);
+             ll.remove(0);
+             ll.add(0,temp);
+        }
+
+      }
+      ans.add(ll.remove(0));
+      return ans.toArray(new int[ans.size()][]);
+    }
+    
+}
